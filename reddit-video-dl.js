@@ -8,7 +8,6 @@ chrome.runtime.onMessage.addListener((request, sender) => {
 
       const videoRoot = document.getElementById(`video-${videoId}`);
       const dataMpdUrl = videoRoot.getAttribute('data-mpd-url');
-      const videoUrl = dataMpdUrl.replace('/DASHPlaylist.mpd', '');
 
       fetch(dataMpdUrl, {
         'Content-Type': 'text/xml; charset=utf-8',
@@ -20,10 +19,13 @@ chrome.runtime.onMessage.addListener((request, sender) => {
           const dataMpdPlaylist = JSON.parse(xml2json(data, ''));
 
           // TODO: retrieve largest video src; naively assumes first option is largest video
-          const videoUrlSrc = `${videoUrl}/${dataMpdPlaylist.MPD.Period.AdaptationSet.Representation[0].BaseURL}`;
+          const baseURL = dataMpdPlaylist.MPD.Period.AdaptationSet[0] ?
+            dataMpdPlaylist.MPD.Period.AdaptationSet[0].Representation[0].BaseURL :
+            dataMpdPlaylist.MPD.Period.AdaptationSet.Representation[0].BaseURL;
+          const videoUrl = `${dataMpdUrl.replace('/DASHPlaylist.mpd', '')}/${baseURL}`;
           
           // TODO: engage download instead of opening video in new tab (which allows right-click save on video so solution works for now)
-          window.open(videoUrlSrc, '_blank').focus();
+          window.open(videoUrl, '_blank').focus();
         })
         .catch(console.error);
     });

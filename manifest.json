@@ -1,6 +1,6 @@
 {
   "name": "Reddit Video Right-Click Download",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Enable chrome right-click download for reddit videos",
   "manifest_version": 2,
   "background": {
