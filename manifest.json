@@ -1,0 +1,17 @@
+{
+  "name": "Reddit Video Right-Click Download",
+  "version": "0.1.0",
+  "description": "Enable chrome right-click download for reddit videos",
+  "manifest_version": 2,
+  "background": {
+    "persistent": false,
+    "scripts": ["background.js"]
+  },
+  "permissions": ["contextMenus"],
+  "content_scripts": [
+    {
+      "matches": ["https://*.reddit.com/r/*"],
+      "js": ["reddit-video-dl.js"]
+    }
+  ]
+}
